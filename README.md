@@ -1,6 +1,6 @@
 
 <div align="center">
-    <img src="https://github.com/frappe/design/raw/master/logos/png/bench-logo.png" height="128">
+    <img src="https://github.com/HarryPaulo/design/raw/master/logos/png/bench-logo.png" height="128">
     <h2>Frappe Bench</h2>
 </div>
 
@@ -26,12 +26,12 @@ You will need a computer/server. Options include:
 
 To install the Frappe/ERPNext server software, you will need an operating system on your normal computer which is not Windows. Note that the command line interface does work on Windows, and you can use Frappe/ERPNext from any operating system with a web browser. However, the server software does not run on Windows. It does run on other operating systems, so choose one of these instead:
 
-- Linux: Debian, Ubuntu, CentOS are the preferred distros and are well tested. [Arch Linux](https://github.com/frappe/bench/wiki/Install-ERPNext-on-ArchLinux) can also be used
+- Linux: Debian, Ubuntu, CentOS are the preferred distros and are well tested. [Arch Linux](https://github.com/HarryPaulo/bench/wiki/Install-ERPNext-on-ArchLinux) can also be used
 - Mac OS X
 
 ### Manual Install
 
-To manually install frappe/erpnext, you can follow this [this wiki](https://github.com/frappe/frappe/wiki/The-Hitchhiker%27s-Guide-to-Installing-Frappe-on-Linux) for Linux and [this wiki](https://github.com/frappe/frappe/wiki/The-Hitchhiker's-Guide-to-Installing-Frappe-on-Mac-OS-X) for MacOS. It gives an excellent explanation about the stack. You can also follow the steps mentioned below:
+To manually install frappe/erpnext, you can follow this [this wiki](https://github.com/HarryPaulo/frappe/wiki/The-Hitchhiker%27s-Guide-to-Installing-Frappe-on-Linux) for Linux and [this wiki](https://github.com/HarryPaulo/frappe/wiki/The-Hitchhiker's-Guide-to-Installing-Frappe-on-Mac-OS-X) for MacOS. It gives an excellent explanation about the stack. You can also follow the steps mentioned below:
 
 #### 1. Install Pre-requisites
 
@@ -48,7 +48,7 @@ To manually install frappe/erpnext, you can follow this [this wiki](https://gith
 
 Install bench as a *non root* user,
 
-	git clone https://github.com/frappe/bench bench-repo
+	git clone https://github.com/HarryPaulo/bench bench-repo
 	pip install --user -e bench-repo
 
 Note: Please do not remove the bench directory the above commands will create
@@ -72,9 +72,9 @@ Note: Please do not remove the bench directory the above commands will create
 
 * Add apps
 
-	The get-app command gets remote frappe apps from a remote git repository and installs them. Example: [erpnext](https://github.com/frappe/erpnext)
+	The get-app command gets remote frappe apps from a remote git repository and installs them. Example: [erpnext](https://github.com/HarryPaulo/erpnext)
 
-		bench get-app erpnext https://github.com/frappe/erpnext
+		bench get-app erpnext https://github.com/HarryPaulo/erpnext
 
 * Install apps
 
@@ -113,7 +113,7 @@ Open your Terminal and enter:
 
 For Linux:
 
-	wget https://raw.githubusercontent.com/frappe/bench/master/playbooks/install.py
+	wget https://raw.githubusercontent.com/HarryPaulo/bench/master/playbooks/install.py
 
 
 #### 2. Run the install script
@@ -179,15 +179,15 @@ $ bench setup manager
 
 What all it does:
 1. Create new site bench-manager.local
-2. Gets the `bench_manager` app from https://github.com/frappe/bench_manager if it doesn't exist already
+2. Gets the `bench_manager` app from https://github.com/HarryPaulo/bench_manager if it doesn't exist already
 3. Installs the bench_manager app on the site bench-manager.local
 
 ## Docker Install - For Developers (beta)
 
-1. For developer setup, you can also use the official [Frappé Docker](https://github.com/frappe/frappe_docker/).
+1. For developer setup, you can also use the official [Frappé Docker](https://github.com/HarryPaulo/frappe_docker/).
 2. The app, mariadb and redis run on individual containers
 3. This setup supports multi-tenancy and exposes the frappe-bench volume as a external storage.
-4. For more details, [read the instructions on the Frappé Docker README](https://github.com/frappe/frappe_docker/)
+4. For more details, [read the instructions on the Frappé Docker README](https://github.com/HarryPaulo/frappe_docker/)
 
 Help
 ====
@@ -223,7 +223,7 @@ Guides
 - [Manual Setup](https://frappe.io/docs/user/en/bench/guides/manual-setup.html)
 - [Setup Production](https://frappe.io/docs/user/en/bench/guides/setup-production.html)
 - [Setup Multitenancy](https://frappe.io/docs/user/en/bench/guides/setup-multitenancy.html)
-- [Stopping Production](https://github.com/frappe/bench/wiki/Stopping-Production-and-starting-Development)
+- [Stopping Production](https://github.com/HarryPaulo/bench/wiki/Stopping-Production-and-starting-Development)
 
 
 Resources
