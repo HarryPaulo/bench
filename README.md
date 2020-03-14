@@ -95,25 +95,23 @@ Note: Please do not remove the bench directory the above commands will create
 
 ---
 
-## Easy Install
+
+# Easy Install Script
 
 - This is an opinionated setup so it is best to setup on a blank server.
 - Works on Ubuntu 16.04+, CentOS 7+, Debian 8+
-- You may have to install Python 2.7 (eg on Ubuntu 16.04+) by running `apt-get install python-minimal`
-- You may also have to install build-essential and python-setuptools by running `apt-get install build-essential python-setuptools`
-- This script will install the pre-requisites, install bench and setup an ERPNext site
-- Passwords for Frappe Administrator and MariaDB (root) will be asked
+- You may have to install Python 3 and other essentials by running `apt-get install python3-minimal build-essential python3-setuptools`
+- This script will install the pre-requisites, install bench and setup an ERPNext site `(site1.local under frappe-bench)`
+- Passwords for Frappe Administrator and MariaDB (root) will be asked and saved under `~/passwoords.txt`
 - MariaDB (root) password may be `password` on a fresh server
 - You can then login as **Administrator** with the Administrator password
-- If you find any problems, post them on the forum: [https://discuss.erpnext.com](https://discuss.erpnext.com)
+- The log file is saved under `/tmp/logs/install_bench.log` in case you run into any issues during the install.
+- If you find any problems, post them on the forum: [https://discuss.erpnext.com](https://discuss.erpnext.com/c/bench) with the `installation_problem` under "Install / Update" category.
 
-Open your Terminal and enter:
+		wget https://raw.githubusercontent.com/HarryPaulo/bench/master/playbooks/install.py?token=AF635BBJ7V7RWFBJEFZL7LS6NUD4G
+		python3 install.py --production
 
-#### 1. Download the install script
-
-For Linux:
-
-	wget https://raw.githubusercontent.com/HarryPaulo/bench/master/playbooks/install.py
+---
 
 
 #### 2. Run the install script
