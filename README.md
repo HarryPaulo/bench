@@ -101,6 +101,7 @@ Note: Please do not remove the bench directory the above commands will create
 - This is an opinionated setup so it is best to setup on a blank server.
 - Works on Ubuntu 16.04+, CentOS 7+, Debian 8+
 - You may have to install Python 3 and other essentials by running `apt-get install python3-minimal build-essential python3-setuptools`
+- You may run this command `sudo apt-get install libffi-dev libssl-dev`
 - This script will install the pre-requisites, install bench and setup an ERPNext site `(site1.local under frappe-bench)`
 - Passwords for Frappe Administrator and MariaDB (root) will be asked and saved under `~/passwoords.txt`
 - MariaDB (root) password may be `password` on a fresh server
