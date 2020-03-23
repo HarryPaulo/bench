@@ -98,6 +98,9 @@ Note: Please do not remove the bench directory the above commands will create
 
 # Easy Install Script
 
+DICA: Fazer a instalação pelo acesso remoto da digital ocean, pelo PUTTY não funciona...
+
+
 - This is an opinionated setup so it is best to setup on a blank server.
 - Works on Ubuntu 16.04+, CentOS 7+, Debian 8+
 - You may have to install Python 3 and other essentials by running `apt-get install python3-minimal build-essential python3-setuptools`
@@ -112,6 +115,9 @@ Note: Please do not remove the bench directory the above commands will create
 		wget https://raw.githubusercontent.com/HarryPaulo/bench/master/playbooks/install.py?token=AF635BBJ7V7RWFBJEFZL7LS6NUD4G
 		python3 install.py --production
 
+
+Após instalar tudo, se o serviço não subir, verificar o log/web.error.log se constar o erro `from werkzeug.contrib.profiler import ProfilerMiddleware`
+basta rodar o comando: `./env/bin/pip install werkzeug==0.16.0`
 ---
 
 
