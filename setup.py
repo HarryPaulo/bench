@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 import re, ast
 
 # get version from __version__ variable in bench/__init__.py
+# Alexandre teste
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
 
 with open('requirements.txt') as f:
