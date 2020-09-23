@@ -112,7 +112,7 @@ DICA: Fazer a instalação pelo acesso remoto da digital ocean, pelo PUTTY não 
 - The log file is saved under `/tmp/logs/install_bench.log` in case you run into any issues during the install.
 - If you find any problems, post them on the forum: [https://discuss.erpnext.com](https://discuss.erpnext.com/c/bench) with the `installation_problem` under "Install / Update" category.
 
-		wget https://raw.githubusercontent.com/HarryPaulo/bench/master/playbooks/install.py?token=AF635BBJ7V7RWFBJEFZL7LS6NUD4G
+		wget https://raw.githubusercontent.com/HarryPaulo/bench/master/playbooks/install.py?token=AF635BCQ7GQCOKLTV3OHI2S7NPEMW -O install.py
 		python3 install.py --production
 
 
