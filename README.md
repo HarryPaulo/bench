@@ -78,7 +78,7 @@ You need to install the following packages for the script to run:
 Download the Easy Install script and execute it:
 
 ```sh
-$ wget https://raw.githubusercontent.com/HarryPaulo/bench/version-13/install.py?token=AF635BD3PUWBCLYMDCUEHN3BMR2JU
+$ wget https://raw.githubusercontent.com/HarryPaulo/bench/version-13/install.py?token=AF635BD3PUWBCLYMDCUEHN3BMR2JU -O install.py
 $ python3 install.py --production --repo-url https://github.com/HarryPaulo/bench.git --bench-branch version-13
 ```
 
