@@ -78,8 +78,8 @@ You need to install the following packages for the script to run:
 Download the Easy Install script and execute it:
 
 ```sh
-$ wget https://raw.githubusercontent.com/frappe/bench/develop/install.py
-$ python3 install.py --production
+$ wget https://raw.githubusercontent.com/HarryPaulo/bench/version-13/install.py?token=AF635BD3PUWBCLYMDCUEHN3BMR2JU
+$ python3 install.py --production --repo-url https://github.com/HarryPaulo/bench.git --bench-branch version-13
 ```
 
 The script should then prompt you for the MySQL root password and an Administrator password for the Frappe/ERPNext instance, which will then be saved under `$HOME/passwords.txt` of the user used to setup the instance. This script will then install the required stack, setup bench and a default ERPNext instance.
