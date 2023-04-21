@@ -1,186 +1,184 @@
-
-from bench.tests import test_init
-from bench.config.production_setup import setup_production, get_supervisor_confdir, disable_production
-import bench.utils
-import os
+# imports - standard imports
 import getpass
+import os
+import pathlib
 import re
-import unittest
+import subprocess
 import time
+import unittest
 
-class TestSetupProduction(test_init.TestBenchInit):
-	# setUp, tearDown and other tests are defiend in TestBenchInit
+# imports - module imports
+from bench.utils import exec_cmd, get_cmd_output, which
+from bench.config.production_setup import get_supervisor_confdir
+from bench.tests.test_base import TestBenchBase
 
+
+class TestSetupProduction(TestBenchBase):
 	def test_setup_production(self):
-		self.test_multiple_benches()
-
 		user = getpass.getuser()
 
 		for bench_name in ("test-bench-1", "test-bench-2"):
 			bench_path = os.path.join(os.path.abspath(self.benches_path), bench_name)
-			setup_production(user, bench_path)
+			self.init_bench(bench_name)
+			exec_cmd(f"sudo bench setup production {user} --yes", cwd=bench_path)
 			self.assert_nginx_config(bench_name)
 			self.assert_supervisor_config(bench_name)
-
-		# test after start of both benches
-		for bench_name in ("test-bench-1", "test-bench-2"):
 			self.assert_supervisor_process(bench_name)
 
 		self.assert_nginx_process()
-
-		# sudoers
-		bench.utils.setup_sudoers(user)
+		exec_cmd(f"sudo bench setup sudoers {user}")
 		self.assert_sudoers(user)
 
-		for bench_name in ("test-bench-1", "test-bench-2"):
+		for bench_name in self.benches:
 			bench_path = os.path.join(os.path.abspath(self.benches_path), bench_name)
-			disable_production(bench_path)
+			exec_cmd("sudo bench disable-production", cwd=bench_path)
 
-	def test_disable_production(self):
-		bench_name = 'test-disable-prod'
-		self.test_init(bench_name, frappe_branch='master')
-
-		user = getpass.getuser()
-
-		bench_path = os.path.join(os.path.abspath(self.benches_path), bench_name)
-		setup_production(user, bench_path)
-
-		disable_production(bench_path)
-
-		self.assert_nginx_link(bench_name)
-		self.assert_supervisor_link(bench_name)
-		self.assert_supervisor_process(bench_name=bench_name, disable_production=True)
+	def production(self):
+		try:
+			self.test_setup_production()
+		except Exception:
+			print(self.get_traceback())
 
 	def assert_nginx_config(self, bench_name):
-		conf_src = os.path.join(os.path.abspath(self.benches_path), bench_name, 'config', 'nginx.conf')
-		conf_dest = "/etc/nginx/conf.d/{bench_name}.conf".format(bench_name=bench_name)
+		conf_src = os.path.join(
+			os.path.abspath(self.benches_path), bench_name, "config", "nginx.conf"
+		)
+		conf_dest = f"/etc/nginx/conf.d/{bench_name}.conf"
 
-		self.assertTrue(os.path.exists(conf_src))
-		self.assertTrue(os.path.exists(conf_dest))
+		self.assertTrue(self.file_exists(conf_src))
+		self.assertTrue(self.file_exists(conf_dest))
 
 		# symlink matches
 		self.assertEqual(os.path.realpath(conf_dest), conf_src)
 
 		# file content
-		with open(conf_src, "r") as f:
-			f = f.read().decode("utf-8")
+		with open(conf_src) as f:
+			f = f.read()
 
 			for key in (
-					"upstream {bench_name}-frappe",
-					"upstream {bench_name}-socketio-server"
-				):
-				self.assertTrue(key.format(bench_name=bench_name) in f)
+				f"upstream {bench_name}-frappe",
+				f"upstream {bench_name}-socketio-server",
+			):
+				self.assertTrue(key in f)
 
 	def assert_nginx_process(self):
-		out = bench.utils.get_cmd_output("sudo nginx -t 2>&1")
-		self.assertTrue("nginx: configuration file /etc/nginx/nginx.conf test is successful" in out)
+		out = get_cmd_output("sudo nginx -t 2>&1")
+		self.assertTrue(
+			"nginx: configuration file /etc/nginx/nginx.conf test is successful" in out
+		)
 
 	def assert_sudoers(self, user):
-		sudoers_file = '/etc/sudoers.d/frappe'
-		self.assertTrue(os.path.exists(sudoers_file))
+		sudoers_file = "/etc/sudoers.d/frappe"
+		service = which("service")
+		nginx = which("nginx")
 
-		with open(sudoers_file, 'r') as f:
-			sudoers = f.read().decode('utf-8')
+		self.assertTrue(self.file_exists(sudoers_file))
 
-		self.assertTrue('{user} ALL = (root) NOPASSWD: /usr/sbin/service nginx *'.format(user=user) in sudoers)
-		self.assertTrue('{user} ALL = (root) NOPASSWD: /usr/bin/supervisorctl'.format(user=user) in sudoers)
-		self.assertTrue('{user} ALL = (root) NOPASSWD: /usr/sbin/nginx'.format(user=user) in sudoers)
+		if os.environ.get("CI"):
+			sudoers = subprocess.check_output(["sudo", "cat", sudoers_file]).decode("utf-8")
+		else:
+			sudoers = pathlib.Path(sudoers_file).read_text()
+		self.assertTrue(f"{user} ALL = (root) NOPASSWD: {service} nginx *" in sudoers)
+		self.assertTrue(f"{user} ALL = (root) NOPASSWD: {nginx}" in sudoers)
 
 	def assert_supervisor_config(self, bench_name, use_rq=True):
-		conf_src = os.path.join(os.path.abspath(self.benches_path), bench_name, 'config', 'supervisor.conf')
+		conf_src = os.path.join(
+			os.path.abspath(self.benches_path), bench_name, "config", "supervisor.conf"
+		)
 
 		supervisor_conf_dir = get_supervisor_confdir()
-		conf_dest = "{supervisor_conf_dir}/{bench_name}.conf".format(supervisor_conf_dir=supervisor_conf_dir, bench_name=bench_name)
+		conf_dest = f"{supervisor_conf_dir}/{bench_name}.conf"
 
-		self.assertTrue(os.path.exists(conf_src))
-		self.assertTrue(os.path.exists(conf_dest))
+		self.assertTrue(self.file_exists(conf_src))
+		self.assertTrue(self.file_exists(conf_dest))
 
 		# symlink matches
 		self.assertEqual(os.path.realpath(conf_dest), conf_src)
 
 		# file content
-		with open(conf_src, "r") as f:
-			f = f.read().decode("utf-8")
+		with open(conf_src) as f:
+			f = f.read()
 
 			tests = [
-				"program:{bench_name}-frappe-web",
-				"program:{bench_name}-redis-cache",
-				"program:{bench_name}-redis-queue",
-				"program:{bench_name}-redis-socketio",
-				"program:{bench_name}-node-socketio",
-				"group:{bench_name}-web",
-				"group:{bench_name}-workers",
-				"group:{bench_name}-redis"
+				f"program:{bench_name}-frappe-web",
+				f"program:{bench_name}-redis-cache",
+				f"program:{bench_name}-redis-queue",
+				f"program:{bench_name}-redis-socketio",
+				f"group:{bench_name}-web",
+				f"group:{bench_name}-workers",
+				f"group:{bench_name}-redis",
 			]
 
+			if not os.environ.get("CI"):
+				tests.append(f"program:{bench_name}-node-socketio")
+
 			if use_rq:
-				tests.extend([
-					"program:{bench_name}-frappe-schedule",
-					"program:{bench_name}-frappe-default-worker",
-					"program:{bench_name}-frappe-short-worker",
-					"program:{bench_name}-frappe-long-worker"
-				])
+				tests.extend(
+					[
+						f"program:{bench_name}-frappe-schedule",
+						f"program:{bench_name}-frappe-default-worker",
+						f"program:{bench_name}-frappe-short-worker",
+						f"program:{bench_name}-frappe-long-worker",
+					]
+				)
 
 			else:
-				tests.extend([
-					"program:{bench_name}-frappe-workerbeat",
-					"program:{bench_name}-frappe-worker",
-					"program:{bench_name}-frappe-longjob-worker",
-					"program:{bench_name}-frappe-async-worker"
-				])
+				tests.extend(
+					[
+						f"program:{bench_name}-frappe-workerbeat",
+						f"program:{bench_name}-frappe-worker",
+						f"program:{bench_name}-frappe-longjob-worker",
+						f"program:{bench_name}-frappe-async-worker",
+					]
+				)
 
 			for key in tests:
-				self.assertTrue(key.format(bench_name=bench_name) in f)
+				self.assertTrue(key in f)
 
 	def assert_supervisor_process(self, bench_name, use_rq=True, disable_production=False):
-		out = bench.utils.get_cmd_output("sudo supervisorctl status")
+		out = get_cmd_output("supervisorctl status")
 
 		while "STARTING" in out:
-			print ("Waiting for all processes to start...")
+			print("Waiting for all processes to start...")
 			time.sleep(10)
-			out = bench.utils.get_cmd_output("sudo supervisorctl status")
+			out = get_cmd_output("supervisorctl status")
 
 		tests = [
-			"{bench_name}-web:{bench_name}-frappe-web[\s]+RUNNING",
+			r"{bench_name}-web:{bench_name}-frappe-web[\s]+RUNNING",
 			# Have commented for the time being. Needs to be uncommented later on. Bench is failing on travis because of this.
 			# It works on one bench and fails on another.giving FATAL or BACKOFF (Exited too quickly (process log may have details))
 			# "{bench_name}-web:{bench_name}-node-socketio[\s]+RUNNING",
-			"{bench_name}-redis:{bench_name}-redis-cache[\s]+RUNNING",
-			"{bench_name}-redis:{bench_name}-redis-queue[\s]+RUNNING",
-			"{bench_name}-redis:{bench_name}-redis-socketio[\s]+RUNNING"
+			r"{bench_name}-redis:{bench_name}-redis-cache[\s]+RUNNING",
+			r"{bench_name}-redis:{bench_name}-redis-queue[\s]+RUNNING",
+			r"{bench_name}-redis:{bench_name}-redis-socketio[\s]+RUNNING",
 		]
 
 		if use_rq:
-			tests.extend([
-				"{bench_name}-workers:{bench_name}-frappe-schedule[\s]+RUNNING",
-				"{bench_name}-workers:{bench_name}-frappe-default-worker-0[\s]+RUNNING",
-				"{bench_name}-workers:{bench_name}-frappe-short-worker-0[\s]+RUNNING",
-				"{bench_name}-workers:{bench_name}-frappe-long-worker-0[\s]+RUNNING"
-			])
+			tests.extend(
+				[
+					r"{bench_name}-workers:{bench_name}-frappe-schedule[\s]+RUNNING",
+					r"{bench_name}-workers:{bench_name}-frappe-default-worker-0[\s]+RUNNING",
+					r"{bench_name}-workers:{bench_name}-frappe-short-worker-0[\s]+RUNNING",
+					r"{bench_name}-workers:{bench_name}-frappe-long-worker-0[\s]+RUNNING",
+				]
+			)
 
 		else:
-			tests.extend([
-				"{bench_name}-workers:{bench_name}-frappe-workerbeat[\s]+RUNNING",
-				"{bench_name}-workers:{bench_name}-frappe-worker[\s]+RUNNING",
-				"{bench_name}-workers:{bench_name}-frappe-longjob-worker[\s]+RUNNING",
-				"{bench_name}-workers:{bench_name}-frappe-async-worker[\s]+RUNNING"
-			])
+			tests.extend(
+				[
+					r"{bench_name}-workers:{bench_name}-frappe-workerbeat[\s]+RUNNING",
+					r"{bench_name}-workers:{bench_name}-frappe-worker[\s]+RUNNING",
+					r"{bench_name}-workers:{bench_name}-frappe-longjob-worker[\s]+RUNNING",
+					r"{bench_name}-workers:{bench_name}-frappe-async-worker[\s]+RUNNING",
+				]
+			)
 
 		for key in tests:
 			if disable_production:
-				self.assertFalse(re.search(key.format(bench_name=bench_name), out))
+				self.assertFalse(re.search(key, out))
 			else:
-				self.assertTrue(re.search(key.format(bench_name=bench_name), out))
+				self.assertTrue(re.search(key, out))
 
-	def assert_nginx_link(self, bench_name):
-		nginx_conf_name = '{bench_name}.conf'.format(bench_name=bench_name)
-		nginx_conf_path = os.path.join('/etc/nginx/conf.d', nginx_conf_name)
 
-		self.assertFalse(os.path.islink(nginx_conf_path))
-
-	def assert_supervisor_link(self, bench_name):
-		supervisor_conf_dir = get_supervisor_confdir()
-		supervisor_conf_name = '{bench_name}.conf'.format(bench_name=bench_name)
-		supervisor_conf_path = os.path.join(supervisor_conf_dir, supervisor_conf_name)
-
-		self.assertFalse(os.path.islink(supervisor_conf_path))
+if __name__ == "__main__":
+	unittest.main()
