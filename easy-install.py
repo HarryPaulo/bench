@@ -44,7 +44,7 @@ def cprint(*args, level: int = 1):
 def clone_frappe_docker_repo() -> None:
 	try:
 		urllib.request.urlretrieve(
-			"https://github.com/frappe/frappe_docker/archive/refs/heads/main.zip",
+			"https://github.com/ivy-solucoes/docker/archive/refs/heads/version-14.zip",
 			"frappe_docker.zip",
 		)
 		logging.info("Downloaded frappe_docker zip file from GitHub")
@@ -219,6 +219,7 @@ def setup_dev_instance(project: str):
 				cwd=os.path.join(os.getcwd(), "frappe_docker"),
 				check=True,
 			)
+
 			cprint(
 				"Please go through the Development Documentation: https://github.com/frappe/frappe_docker/tree/main/development to fully complete the setup.",
 				level=2,
