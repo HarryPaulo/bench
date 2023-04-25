@@ -87,7 +87,7 @@ Download the Easy Install script and execute it:
 
 ```sh
 OBS: gerar essa URL com um token valido quando usar...
-$ wget https://raw.githubusercontent.com/HarryPaulo/bench/version-14/easy-install.py?token=GHSAT0AAAAAAB4FNP6WETPRAHXLBGVEG4C2ZCIGD7A
+$ wget https://raw.githubusercontent.com/HarryPaulo/bench/version-14/easy-install.py?token=GHSAT0AAAAAAB4FNP6WETPRAHXLBGVEG4C2ZCIGD7A -O easy-install.py
 $ python3 easy-install.py --prod --email your@email.tld
 ```
 
