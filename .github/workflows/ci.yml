@@ -4,10 +4,10 @@ on:
   pull_request:
   workflow_dispatch:
   push:
-    branches: [ develop ]
+    branches: [ version-14 ]
 
 concurrency:
-  group: ci-develop-${{ github.event_name }}-${{ github.event.number }}
+  group: ci-version-14-${{ github.event_name }}-${{ github.event.number }}
   cancel-in-progress: true
 
 permissions:
