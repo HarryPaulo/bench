@@ -695,6 +695,9 @@ def install_apps_from_path(path, bench_path="."):
 			skip_assets=True,
 		)
 
+def teste_abcd(path):
+	print("1234")
+	pass
 
 def get_apps_json(path):
 	import requests
