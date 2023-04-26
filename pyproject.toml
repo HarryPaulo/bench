@@ -1,5 +1,5 @@
 [project]
-name = "frappe-bench"
+name = "ifrappe-bench"
 description = "CLI to manage Multi-tenant deployments for Frappe apps"
 readme = "README.md"
 license = "GPL-3.0-only"

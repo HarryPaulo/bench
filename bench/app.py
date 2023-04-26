@@ -695,15 +695,6 @@ def install_apps_from_path(path, bench_path="."):
 			skip_assets=True,
 		)
 
-def teste_abcd(path):
-	import requests
-
-	if path.startswith("http"):
-		r = requests.get(path)
-		return r.json()
-
-	with open(path) as f:
-		return json.load(f)
 
 def get_apps_json(path):
 	import requests
