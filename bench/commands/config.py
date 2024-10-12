@@ -55,6 +55,16 @@ def config_http_timeout(seconds):
 	update_config({"http_timeout": seconds})
 
 
+# *** IVY *** - ini
+@click.command(
+	"ssl_client_certificate", help="Set certificate path to nginx use on mtls"
+)
+@click.argument("path", type=str)
+def config_ssl_client_certificate(path):
+	update_config({"ssl_client_certificate": path})
+# *** IVY *** - fim
+
+
 @click.command("set-common-config", help="Set value in common config")
 @click.option("configs", "-c", "--config", multiple=True, type=(str, str))
 def set_common_config(configs):
@@ -95,5 +105,6 @@ config.add_command(config_dns_multitenant)
 config.add_command(config_rebase_on_pull)
 config.add_command(config_serve_default_site)
 config.add_command(config_http_timeout)
+config.add_command(config_ssl_client_certificate) # *** IVY *** -
 config.add_command(set_common_config)
 config.add_command(remove_common_config)
