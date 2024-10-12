@@ -44,6 +44,7 @@ def make_nginx_conf(bench_path, yes=False, logging=None, log_format=None):
 		"allow_rate_limiting": allow_rate_limiting,
 		# for nginx map variable
 		"random_string": "".join(random.choice(string.ascii_lowercase) for i in range(7)),
+		"ssl_client_certificate": config.get("ssl_client_certificate"), # *** IVY *** -
 	}
 
 	if logging and logging != "none":
