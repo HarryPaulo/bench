@@ -53,26 +53,32 @@ A Frappe instance can be setup and replicated easily using [Docker](https://dock
 
 To setup either of the environments, you will need to clone the official docker repository:
 
+<!-- **** IVY (Start) **** - Change github account to ivy-solucoes -->
 ```sh
-git clone https://github.com/frappe/frappe_docker.git
+git clone https://github.com/ivy-solucoes/docker.git
 ```
+<!-- **** IVY (End) **** - Change github account to ivy-solucoes -->
 
-A quick setup guide for both the environments can be found below. For more details, check out the [Frappe Docker Repository](https://github.com/frappe/frappe_docker).
+A quick setup guide for both the environments can be found below. For more details, check out the [Frappe Docker Repository](https://github.com/ivy-solucoes/docker).
 
 ### Easy Install Script
 
 The Easy Install script should get you going with a Frappe setup with minimal manual intervention and effort.
 
-This script uses Docker with the [Frappe Docker Repository](https://github.com/frappe/frappe_docker) and can be used for both Development setup and Production setup.
+<!-- **** IVY (Start) **** - Change github account to ivy-solucoes -->
+This script uses Docker with the [Frappe Docker Repository](https://github.com/ivy-solucoes/docker) and can be used for both Development setup and Production setup.
+<!-- **** IVY (End) **** - Change github account to ivy-solucoes -->
 
 #### Setup
 
 Download the Easy Install script and execute it:
 
+<!-- **** IVY (Start) ****: Change to HarryPaulo -->
 ```sh
-wget https://raw.githubusercontent.com/frappe/bench/develop/easy-install.py
+wget https://raw.githubusercontent.com/HarryPaulo/bench/develop/easy-install.py
 python3 easy-install.py deploy --email=user@domain.tld --sitename=subdomain.domain.tld --app=erpnext
 ```
+<!-- **** IVY (End) ****: Change to HarryPaulo -->
 
 This script will install docker on your system and will fetch the required containers, setup bench and a default ERPNext instance.
 
@@ -316,7 +322,9 @@ If you wish to extend the capabilities of bench with your own custom Frappe Appl
 - [Manual Setup](https://docs.frappe.io/framework/user/en/tutorial/install-and-setup-bench)
 - [Setup Production](https://docs.frappe.io/framework/user/en/bench/guides/setup-production)
 - [Setup Multitenancy](https://docs.frappe.io/framework/user/en/bench/guides/setup-multitenancy)
-- [Stopping Production](https://github.com/frappe/bench/wiki/Stopping-Production-and-starting-Development)
+<!-- **** IVY (Start) **** - Change to HarryPaulo -->
+- [Stopping Production](https://github.com/HarryPaulo/bench/wiki/Stopping-Production-and-starting-Development)
+<!-- **** IVY (End) **** - Change to HarryPaulo -->
 
 
 ## Resources
@@ -336,10 +344,12 @@ To contribute and develop on the bench CLI tool, clone this repo and create an e
 
 ### Clone and install
 
+<!-- **** IVY (Start) **** - Change to HarryPaulo -->
 ```sh
-git clone https://github.com/frappe/bench ~/bench-repo
+git clone https://github.com/HarryPaulo/bench ~/bench-repo
 pip install -e ~/bench-repo
 ```
+<!-- **** IVY (End) **** - Change to HarryPaulo -->
 
 ```shell
 bench src

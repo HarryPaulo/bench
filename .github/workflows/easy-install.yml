@@ -4,10 +4,10 @@ on:
   pull_request:
   workflow_dispatch:
   push:
-    branches: [develop]
+    branches: [version-16] # **** IVY ****: Change to version-16
 
 concurrency:
-  group: easy-install-develop-${{ github.event_name }}-${{ github.event.number }}
+  group: easy-install-version-16-${{ github.event_name }}-${{ github.event.number }} # **** IVY ****: Change to version-16
   cancel-in-progress: true
 
 permissions:

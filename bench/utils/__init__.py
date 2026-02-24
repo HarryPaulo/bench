@@ -148,7 +148,7 @@ def check_latest_version():
 	from semantic_version import Version
 
 	try:
-		pypi_request = requests.get("https://pypi.org/pypi/frappe-bench/json")
+		pypi_request = requests.get("https://pypi.org/pypi/ifrappe-bench/json") # **** IVY ****: Change to ifrappe-bench
 	except Exception:
 		# Exceptions thrown are defined in requests.exceptions
 		# ignore checking on all Exceptions

@@ -1,14 +1,17 @@
 # Releasing Frappe ERPNext
 
 * Make a new bench dedicated for releasing
+
+<!-- **** IVY (Start) ****: Change to HarryPaulo -->
 ```
-bench init release-bench --frappe-path git@github.com:frappe/frappe.git
+bench init release-bench --frappe-path git@github.com:HarryPaulo/frappe.git
 ```
 
 * Get ERPNext in the release bench
 ```
-bench get-app erpnext git@github.com:frappe/erpnext.git
+bench get-app erpnext git@github.com:HarryPaulo/erpnext.git
 ```
+<!-- **** IVY (End) ****: Change to HarryPaulo -->
 
 * Configure as release bench. Add this to the common_site_config.json
 ```

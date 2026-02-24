@@ -178,7 +178,9 @@ The config group commands are used for manipulating configurations in the curren
  - **dns_multitenant**: Enable/Disable bench multitenancy on running bench update
  - **serve_default_site**: Configure nginx to serve the default site on port 80
  - **http_timeout**: Set HTTP timeout
-
+<!-- **** IVY (Start) **** - ssl_client_certificate -->
+ - **ssl_client_certificate**: set certificate path to nginx use on mtls (unique file with many certificates inside)
+<!-- **** IVY (End) **** - ssl_client_certificate -->
 
 
 ## Install commands
